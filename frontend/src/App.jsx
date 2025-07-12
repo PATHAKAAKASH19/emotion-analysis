@@ -6,7 +6,7 @@ function App() {
 
 
   return (
-    <div>
+    <div className="bg-linear-to-t from-[#2D0F45] to-black md:flex md: flex-col md:">
       <Header/>
       <Container/>
       <Footer/>
