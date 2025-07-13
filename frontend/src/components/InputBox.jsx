@@ -13,7 +13,7 @@ export default function InputBox({setLoading, setEmotionalData}) {
          setLoading(true)
           e.preventDefault()
             
-          const res = await fetch(`${import.meta.env.BACKEND_URL}`,{
+          const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}`,{
             method:"POST",
             headers:{
                "Content-Type":"application/json"
@@ -22,17 +22,27 @@ export default function InputBox({setLoading, setEmotionalData}) {
               text:value
             })
         } )
+       
 
         const data = await res.json()
-
+  
         if(res.status === 200){
-          console.log(data)
+         
 
-          const data = JSON.parse(localStorage.getItem("emotionData"))
-          setEmotionalData(prev =>  [data.emotions, ...data])
+          const oldData = JSON.parse(localStorage.getItem("emotionData"))
+          if(oldData !==null){
 
-          localStorage.removeItem("emotionData")
-          localStorage.setItem("emotionData", JSON.stringify([...data, data.emotions]))
+            setEmotionalData(prev =>  [data.emotions, ...oldData])
+             localStorage.removeItem("emotionData")
+             localStorage.setItem("emotionData", JSON.stringify([...oldData, data.emotions]))
+
+          }else {
+             setEmotionalData(prev =>  [data.emotions, ...prev])
+              localStorage.setItem("emotionData", JSON.stringify([ data.emotions]))
+          }
+
+          
+         
           setLoading(false)
           setValue("")
         }

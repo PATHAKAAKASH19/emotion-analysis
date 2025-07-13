@@ -2,17 +2,19 @@ import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 
-
-const app = express()
 dotenv.config()
+const app = express()
 
+console.log("aa")
 app.use(cors({
-    origin:[`${process.env.FRONTEND_URL}`, "http://localhost:5173"],
-    methods:["POST", "GET"],
-    allowedHeaders: ['Content-Type'],
+    origin:["http://localhost:5173", `${process.env.FRONTEND_URL}`], 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+    allowedHeaders: ['Authorization', 'Content-Type']
+    
 }))
-app.use(express.urlencoded({extended:true}))
 app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
 function analyzeEmotion(text) {
 
@@ -60,9 +62,11 @@ function analyzeEmotion(text) {
 
 
 
+
 app.post("/", (req, res) => {
    const {text} = req.body
    console.log(text)
+
 
   if (!text) {
     return res.status(400).json({ error: 'No text provided' });
@@ -70,7 +74,7 @@ app.post("/", (req, res) => {
 
    
    setTimeout(() => {
-    res.json({
+    return res.status(200).json({
       status: 'success',
       emotions: analyzeEmotion(text)
     });
@@ -78,6 +82,6 @@ app.post("/", (req, res) => {
    
 })
 
-app.listen(3000,() => {
-    console.log("server is running")
+app.listen(4000,() => {
+console.log(`Running Node.js ${process.version}`);
 })
