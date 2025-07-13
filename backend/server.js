@@ -7,8 +7,9 @@ const app = express()
 dotenv.config()
 
 app.use(cors({
-    origin:"*",
-    methods:["POST", "GET"]
+    origin:[`${process.env.FRONTEND_URL}`, "http://localhost:5173", "http://192.168.0.104:5173/"],
+    methods:["POST", "GET"],
+    allowedHeaders: ['Content-Type'],
 }))
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
@@ -77,6 +78,6 @@ app.post("/", (req, res) => {
    
 })
 
-app.listen(process.env.PORT,() => {
+app.listen(3000,() => {
     console.log("server is running")
 })
